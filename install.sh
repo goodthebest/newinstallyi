@@ -173,11 +173,11 @@
     sudo apt -y update
 
     if [[ ("$DISTRO" == "20") ]]; then
-    apt -y install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli
-    apt -y install php8.2-cgi php8.2-curl php8.2-intl php8.2-pspell
-    apt -y install php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl php8.2-zip
-    apt -y install php8.2-mbstring php8.2-memcache php8.2-memcached certbot
-    apt -y install libssh-dev libbrotli-dev
+    sudo apt -y install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli
+    sudo apt -y install php8.2-cgi php8.2-curl php8.2-intl php8.2-pspell
+    sudo apt -y install php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl php8.2-zip
+    sudo apt -y install php8.2-mbstring php8.2-memcache php8.2-memcached certbot
+    sudo apt -y install libssh-dev libbrotli-dev
     sleep 2
     sudo systemctl start php8.2-fpm
     sudo systemctl status php8.2-fpm | sed -n "1,3p"
