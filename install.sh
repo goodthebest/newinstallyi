@@ -172,21 +172,16 @@
     fi
     sudo apt -y update
 
-    if [[ ("$DISTRO" == "16") ]]; then
-    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear php-auth imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache php-imagick php-gettext php7.3-zip php7.3-mbstring
-    #sudo phpenmod mcrypt
-    #sudo phpenmod mbstring
-    else
-    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli \
-    php7.3-cgi php-pear imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt\
-    php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php7.3-memcache php7.3-memcached php-imagick php-gettext php7.3-zip php7.3-mbstring \
-    libpsl-dev libnghttp2-dev
+    if [[ ("$DISTRO" == "20") ]]; then
+    apt -y install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli
+    apt -y install php8.2-cgi php8.2-curl php8.2-intl php8.2-pspell
+    apt -y install php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl php8.2-zip
+    apt -y install php8.2-mbstring php8.2-memcache php8.2-memcached certbot
+    apt -y install libssh-dev libbrotli-dev
+    sleep 2
+    sudo systemctl start php8.2-fpm
+    sudo systemctl status php8.2-fpm | sed -n "1,3p"
     fi
-    sleep 5
-    sudo systemctl start php7.3-fpm
-    sudo systemctl status php7.3-fpm | sed -n "1,3p"
     sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
