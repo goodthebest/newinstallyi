@@ -172,18 +172,72 @@
     fi
     sudo apt -y update
 
+    if [[ "$DISTRO" == "16" || "$DISTRO" == "18" ]]; then
+    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd
+    sudo apt -y install php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi
+    sudo apt -y install php-pear php-auth-sasl mcrypt imagemagick libruby
+    sudo apt -y install php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3
+    sudo apt -y install php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache
+    sudo apt -y install php-imagick php-gettext php7.3-zip php7.3-mbstring
+    sudo apt -y install fail2ban ntpdate python3 python3-dev python3-pip
+    sudo apt -y install curl git sudo coreutils pollinate unzip unattended-upgrades cron
+    sudo apt -y install pwgen libgmp3-dev libmysqlclient-dev libcurl4-gnutls-dev
+    sudo apt -y install libkrb5-dev libldap2-dev libidn11-dev gnutls-dev librtmp-dev
+    sudo apt -y install build-essential libtool autotools-dev automake pkg-config libevent-dev bsdmainutils libssl-dev
+    sudo apt -y install automake cmake gnupg2 ca-certificates lsb-release nginx certbot libsodium-dev
+    sudo apt -y install libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev php7.3-memcache php7.3-memcached memcached
+    sudo apt -y install php8.1-mysql
+    sudo apt -y install libssh-dev libbrotli-dev php8.2-curl
+    else
+    sudo apt -y install php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd
+    sudo apt -y install php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi
+    sudo apt -y install php-pear php-auth-sasl mcrypt imagemagick libruby
+    sudo apt -y install php7.3-curl php7.3-intl php7.3-pspell php7.3-recode php7.3-sqlite3
+    sudo apt -y install php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php-memcache
+    sudo apt -y install php-imagick php-gettext php7.3-zip php7.3-mbstring
+    sudo apt -y install fail2ban ntpdate python3 python3-dev python3-pip
+    sudo apt -y install curl git sudo coreutils pollinate unzip unattended-upgrades cron
+    sudo apt -y install pwgen libgmp3-dev libmysqlclient-dev libcurl4-gnutls-dev
+    sudo apt -y install libkrb5-dev libldap2-dev libidn11-dev gnutls-dev librtmp-dev
+    sudo apt -y install build-essential libtool autotools-dev automake pkg-config libevent-dev bsdmainutils libssl-dev
+    sudo apt -y install automake cmake gnupg2 ca-certificates lsb-release nginx certbot libsodium-dev
+    sudo apt -y install libnghttp2-dev librtmp-dev libssh2-1 libssh2-1-dev libldap2-dev libidn11-dev libpsl-dev libkrb5-dev php7.3-memcache php7.3-memcached memcached
+    sudo apt -y install php8.1-mysql
+    sudo apt -y install libssh-dev libbrotli-dev php8.2-curl
+    fi
+    
     if [[ ("$DISTRO" == "20") ]]; then
-    sudo apt -y install php7.3 php7.3-fpm php7.3-opcache php7.3 php7.3-common php7.3-gd php7.3-mysql php7.3-imap php7.3-cli php7.3-cgi php-pear imagemagick libruby php7.3-curl php7.3-intl php7.3-pspell mcrypt php7.3-recode php7.3-sqlite3 php7.3-tidy php7.3-xmlrpc php7.3-xsl memcached php7.3-memcache php7.3-memcached php-imagick php7.3-zip php7.3-mbstring libpsl-dev libnghttp2-dev
+    sudo apt -y install php8.2-fpm php8.2-opcache php8.2 php8.2-common php8.2-gd php8.2-mysql php8.2-imap php8.2-cli
+    sudo apt -y install php8.2-cgi php8.2-curl php8.2-intl php8.2-pspell
+    sudo apt -y install php8.2-sqlite3 php8.2-tidy php8.2-xmlrpc php8.2-xsl php8.2-zip
+    sudo apt -y install php8.2-mbstring php8.2-memcache php8.2-memcached certbot
+    sudo apt -y install libssh-dev libbrotli-dev
     sleep 2
-    sudo systemctl start php7.3-fpm
-    sudo systemctl status php7.3-fpm | sed -n "1,3p"
+    sudo systemctl start php8.2-fpm
+    sudo systemctl status php8.2-fpm | sed -n "1,3p"
     fi
 
     sleep 15
     echo
     echo -e "$GREEN Done...$COL_RESET"
 
-
+    # Suppress Upgrade Prompts
+    # When Ubuntu 22 comes out, we don't want users to be prompted to upgrade,
+    # because we don't yet support it.
+    if [ -f /etc/update-manager/release-upgrades ]; then
+    	sudo editconf.py /etc/update-manager/release-upgrades Prompt=never
+    	sudo rm -f /var/lib/ubuntu-release-upgrader/release-upgrade-available
+    fi
+    
+    # fix CDbConnection failed to open the DB connection.
+    if [[ "$DISTRO" == "16" || "$DISTRO" == "18" ]]; then
+    echo -e "$CYAN => Fixing DBconnection issue... $COL_RESET"
+    sudo update-alternatives --set php /usr/bin/php7.3
+    
+    elif [[ "$DISTRO" == "20" ]]; then
+    echo -e "$CYAN => Fixing DBconnection issue... $COL_RESET"
+    sudo update-alternatives --set php /usr/bin/php7.3
+    fi
 
     # Installing other needed files
     echo
