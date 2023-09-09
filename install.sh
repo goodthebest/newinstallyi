@@ -166,7 +166,6 @@
     php7.4-cgi php-pear imagemagick libruby php7.4-curl php7.4-intl php7.4-pspell mcrypt\
     php7.4-sqlite3 php7.4-tidy php7.4-xmlrpc php7.4-xsl memcached php7.4-memcache php7.4-memcached php-imagick php7.4-zip php7.4-mbstring \
     libpsl-dev libnghttp2-dev
-    sudo apt -y install php-curl php-memcache php-memcached
     sleep 5
     sudo systemctl start php7.4-fpm
     sudo systemctl status php7.4-fpm | sed -n "1,3p"
